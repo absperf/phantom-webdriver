@@ -1,6 +1,7 @@
 require 'typhoeus'
 require 'nokogiri'
 require_relative 'configuration'
+require_relative 'actions'
 
 class Walker
   attr_reader :configuration
@@ -28,7 +29,12 @@ class Walker
   end
 
   def take_action
-    steps = evaluate_steps()
+    steps = evaluate_steps
+
+    steps.each do |step|
+      Actions.send(step[:cmd])
+    end
   end
+
 end
 
