@@ -21,7 +21,7 @@ class Walker
       cmd = step[0]
       target = step[1]
       args = step[2] || ""
-      ret << { :cmd => cmd, :target => target, :args => args, :link => @configuration.start, :app => @configuration.title }
+      ret << { :cmd => cmd, :target => target, :args => args, :link => @configuration.start, :app => @configuration.title, :order => order}
     end
     ret << { :cmd => 'Total', :target => '', :args => '', :link => @configuration.start, :app => @configuration.title, :order => 999 }
   end

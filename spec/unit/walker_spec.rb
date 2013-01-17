@@ -35,7 +35,11 @@ describe Walker do
       walker = Walker.new address
       walker.open_config
       evaluated_steps = walker.evaluate_steps
-      evaluated_steps.should include({:cmd => 'Total', :target => '', :args => '', :link => 'https://www.google.com', :app => 'New Test' })
+      evaluated_steps.should include({ :cmd => 'Total', :target => '', :args => '', :link => 'https://www.google.com/', :app => 'New Test', :order => 999 } )
+      evaluated_steps.should include({ :cmd => 'clickAndWait', :target => 'id=gb_78', :args => '', :link => 'https://www.google.com/', :app => 'New Test', :order => 4 })
+      evaluated_steps.should include({ :cmd => 'clickAndWait', :target => 'id=gb_8', :args => '', :link => 'https://www.google.com/', :app => 'New Test', :order => 3 })
+      evaluated_steps.should include({ :cmd => 'clickAndWait', :target => 'css=#gb_2 > span.gbts', :args => '', :link => 'https://www.google.com/', :app => 'New Test', :order => 2 })
+      evaluated_steps.should include({ :cmd => 'open', :target => '/', :args => '', :link => 'https://www.google.com/', :app => 'New Test', :order => 1 })
     end
   end
 
