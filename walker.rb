@@ -1,5 +1,6 @@
 require 'typhoeus'
 require 'nokogiri'
+require_relative 'configuration'
 
 class Walker
   attr_reader :configuration
@@ -25,25 +26,9 @@ class Walker
     end
     ret << { :cmd => 'Total', :target => '', :args => '', :link => @configuration.start, :app => @configuration.title, :order => 999 }
   end
+
+  def take_action
+    steps = evaluate_steps()
+  end
 end
 
-class Configuration
-  def initialize(configuration_text)
-    @document = Nokogiri::XML(configuration_text)
-  end
-
-  def steps
-    @document.css('tbody > tr').map do |row|
-      row.css('td').children.map { |td| td.text }
-    end
-  end
-
-  def start
-    @document.at_css('head > link').attributes['href'].text
-  end
-
-  def title
-    @document.at_css('title').children.first.text
-  end
-
-end
