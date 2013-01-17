@@ -1,5 +1,6 @@
 require 'typhoeus'
 require 'nokogiri'
+require 'selenium-webdriver'
 require_relative 'configuration'
 require_relative 'actions'
 
@@ -30,10 +31,18 @@ class Walker
 
   def take_action
     steps = evaluate_steps
+    driver = create_driver
+    driver.navigate.to @configuration.start
 
     steps.each do |step|
-      Actions.send(step[:cmd])
+      Actions.send(step[:cmd], step, driver)
     end
+
+    driver.quit
+  end
+
+  def create_driver
+    Selenium::WebDriver.for :phantomjs
   end
 
 end
