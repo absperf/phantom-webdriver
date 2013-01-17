@@ -32,10 +32,10 @@ class Walker
   def take_action
     steps = evaluate_steps
     driver = create_driver
-    driver.navigate.to @configuration.start
+    actions = Actions.new(driver, @configuration)
 
     steps.each do |step|
-      Actions.send(step[:cmd], step, driver)
+      actions.send(step[:cmd], step)
     end
 
     driver.quit
