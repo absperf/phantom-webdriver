@@ -1,4 +1,5 @@
 class Actions
+  attr_accessor :driver
 
   def initialize(configuration)
     @driver = Selenium::WebDriver.for :phantomjs
@@ -11,19 +12,26 @@ class Actions
   end
 
   def clickAndWait(step)
-    @driver.find_element(find_element_by_type(step[:target])).click
+    @driver.find_element(find_element_by_type(step)).click
+  end
+
+  def click(step)
+    @driver.find_element(find_element_by_type(step)).click
   end
 
   def Total(step)
+  end
+
+  def type(step)
+    @driver.find_element(find_element_by_type(step))
   end
 
   def find_link(selector)
     { :link => selector }
   end
 
-  def find_element_by_type(target)
-    begin 
-    type, selector = target.split '='
+  def find_element_by_type(step)
+    type, selector = step[:target].split(/(link|css|id|name)=/).reject { |str| str.empty? }
     case type
     when "link"
       find_link selector
@@ -33,9 +41,8 @@ class Actions
       find_id selector
     when "name"
       find_name selector
-    end
-    rescue
-      find_xpath target
+    else
+      find_xpath step[:target]
     end
   end
 

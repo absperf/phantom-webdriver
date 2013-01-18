@@ -36,8 +36,8 @@ class Walker
     steps.each do |step|
       actions.send(step[:cmd], step)
     end
+    actions.driver.close
 
-    driver.quit
   end
 
 end
