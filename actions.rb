@@ -23,7 +23,7 @@ class Actions
   end
 
   def type(step)
-    @driver.find_element(find_element_by_type(step)).attribute(step[:args])
+    @driver.find_element(find_element_by_type(step)).send_keys(step[:args])
   end
 
   def find_link(selector)
