@@ -18,6 +18,11 @@ describe Actions do
   end
 
   describe '#clickAndWait' do
+    it 'clicks the element and waits for page to load' do
+      step = {:cmd=>"clickAndWait", :target=>"link=Project Home", :args=>"", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>2}
+      Selenium::WebDriver::Element.any_instance.should_receive :click
+      @actions.clickAndWait(step)
+    end
   end
 
   describe '#type' do

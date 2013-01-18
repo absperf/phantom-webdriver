@@ -50,10 +50,10 @@ describe Walker do
     subject { address = "file://#{Dir.pwd}/spec/fixtures/selenium.html"; Walker.new address }
 
     it 'calls .open method on Action module' do
-      Actions.any_instance.should_receive(:open)
-      Actions.any_instance.should_receive(:Total)
+      Actions.any_instance.should_receive :open
+      Actions.any_instance.should_receive :Total
       Actions.any_instance.should_receive(:clickAndWait).at_least(3).times
-      Actions.any_instance.should_receive(:type)
+      Actions.any_instance.should_receive :type
       subject.open_config
       subject.take_action
     end
