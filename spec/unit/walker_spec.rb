@@ -48,13 +48,14 @@ describe Walker do
   describe '#take_action' do
 
     subject { address = "file://#{Dir.pwd}/spec/fixtures/selenium.html"; Walker.new address }
+
     it 'calls .open method on Action module' do
-      #pending 'Can\'t test class methods'
+      Actions.any_instance.should_receive(:open)
+      Actions.any_instance.should_receive(:Total)
+      Actions.any_instance.should_receive(:clickAndWait).at_least(3).times
+      Actions.any_instance.should_receive(:type)
       subject.open_config
       subject.take_action
-      #subject.should_receive('open')
-     # Actions.should_receive(:clickAndWait)
-      #Actions.should_receive(:Total)
     end
   end
 
