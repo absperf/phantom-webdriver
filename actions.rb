@@ -1,7 +1,7 @@
 class Actions
 
-  def initialize(driver, configuration)
-    @driver = driver
+  def initialize(configuration)
+    @driver = Selenium::WebDriver.for :phantomjs
     @configuration = configuration
     @driver.navigate.to @configuration.start
   end
@@ -12,15 +12,17 @@ class Actions
 
   def clickAndWait(step)
     @driver.find_element(find_element_by_type(step[:target])).click
-    # click
-    # wait for new page to load
-    wait = Selenium::WebDriver::Wait.new(:timeout => 10)
   end
 
   def Total(step)
   end
 
+  def find_link(selector)
+    { :link => selector }
+  end
+
   def find_element_by_type(target)
+    begin 
     type, selector = target.split '='
     case type
     when "link"
@@ -31,7 +33,8 @@ class Actions
       find_id selector
     when "name"
       find_name selector
-    else
+    end
+    rescue
       find_xpath target
     end
   end

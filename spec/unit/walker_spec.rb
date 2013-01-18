@@ -47,7 +47,7 @@ describe Walker do
 
   describe '#take_action' do
 
-    subject { address = "file://#{Dir.pwd}/spec/fixtures/google.html"; Walker.new address }
+    subject { address = "file://#{Dir.pwd}/spec/fixtures/selenium.html"; Walker.new address }
     it 'calls .open method on Action module' do
       #pending 'Can\'t test class methods'
       subject.open_config

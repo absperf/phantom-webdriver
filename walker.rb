@@ -31,18 +31,13 @@ class Walker
 
   def take_action
     steps = evaluate_steps
-    driver = create_driver
-    actions = Actions.new(driver, @configuration)
+    actions = Actions.new(@configuration)
 
     steps.each do |step|
       actions.send(step[:cmd], step)
     end
 
     driver.quit
-  end
-
-  def create_driver
-    Selenium::WebDriver.for :phantomjs
   end
 
 end
