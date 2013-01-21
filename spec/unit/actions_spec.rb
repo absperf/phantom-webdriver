@@ -18,11 +18,27 @@ describe Actions do
   end
 
   describe '#clickAndWait' do
-    it 'clicks the element and waits for page to load' do
-      step = { :cmd=>"clickAndWait", :target=>"link=Project Home", :args=>"", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>2 }
-      Selenium::WebDriver::Element.any_instance.should_receive :click
-      @actions.clickAndWait(step)
-      @actions.driver.execute_script("return document.readyState").should == "complete"
+    context 'no timeout' do
+      it 'clicks the element and waits for page to load' do
+        step = { :cmd=>"clickAndWait", :target=>"link=Project Home", :args=>"", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>2 }
+        Selenium::WebDriver::Element.any_instance.should_receive :click
+        actions = @actions.clickAndWait(step).split("\t")
+        @actions.driver.execute_script("return document.readyState").should == "complete"
+        actions[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Time|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/,"")
+      end
+    end
+
+    context 'timeout' do
+      it 'clicks the element and waits for timeout message' do
+        step = { :cmd=>"clickAndWait", :target=>"link=Project Home", :args=>"", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>2 }
+        @actions.timeout = 0
+        Selenium::WebDriver::Element.any_instance.should_receive :click
+        actions = @actions.clickAndWait(step).split("\t")
+        @actions.driver.execute_script("return document.readyState").should_not == "complete"
+        actions[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Time|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/,"")
+        actions[2].should == "2"
+        actions[3].should == "Click operation has timed out"
+      end
     end
   end
 

@@ -1,7 +1,8 @@
 class Actions
-  attr_accessor :driver
+  attr_accessor :driver, :timeout
 
   def initialize(configuration)
+    @timeout = 30
     @driver = Selenium::WebDriver.for :phantomjs
     @configuration = configuration
     @driver.navigate.to @configuration.start
@@ -9,13 +10,22 @@ class Actions
   end
 
   def open(step)
+    start_time = Time.now.to_i
     @driver.navigate.to step[:target]
+    value = Time.now.to_i - start_time
   end
 
   def clickAndWait(step)
+    start_time = Time.now.to_i
     @driver.find_element(find_element_by_type(step)).click
-    wait = Selenium::WebDriver::Wait.new(:timeout => 30)
-    wait.until { @driver.execute_script("return document.readyState") == "complete"; }
+    wait = Selenium::WebDriver::Wait.new(:timeout => @timeout)
+    begin
+      wait.until { @driver.execute_script("return document.readyState") == "complete"; }
+      value = Time.now.to_i - start_time
+      format_metric step, value, "Time", 0, ""
+    rescue 
+      format_metric step, @timeout, "Time", 2, "Click operation has timed out"
+    end
   end
 
   def click(step)
@@ -46,10 +56,10 @@ class Actions
 
   def Total(step)
     total_time = Time.now.to_i - @start_time
-    formatMetric step, total_time, "Time", 0, ""
+    format_metric step, total_time, "Time", 0, ""
   end
 
-  def formatMetric(step, value, type, status, message="")
+  def format_metric(step, value, type, status, message="")
     page = @driver.title
     dkey = "App|#{step[:app]}|#{page}|#{type}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
     "#{dkey}\t#{value}\t#{status}\t#{message}"
