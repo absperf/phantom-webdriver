@@ -113,6 +113,28 @@ describe Actions do
   end
 
   describe '#waitForElementPresent' do
+    context 'exists' do
+      it 'waits for an xpath that exists' do
+        step = { :cmd => "waitForElementPresent", :target => "//title", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
+        action = @actions.waitForElementPresent(step).split("\t")
+        action[2].should == "0"
+        action[3].should == nil
+      end
+      
+      it 'waits for an id that exists' do
+        step = { :cmd => "waitForElementPresent", :target => "id=wikiheader", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
+        action = @actions.waitForElementPresent(step).split("\t")
+        action[2].should == "0"
+        action[3].should == nil
+      end
+
+    end
+
+    context 'timeout' do
+      it 'times out on an xpath' do
+      end
+    end
+
   end
 
   describe '#setTimeout' do

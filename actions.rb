@@ -68,9 +68,24 @@ class Actions
   end
 
   def waitForElementPresent(step)
+    start_time = Time.now.to_i
+    message = ""
+    status = 0
+    wait = Selenium::WebDriver::Wait.new :timeout => @timeout
+    begin
+      value = Time.now.to_i - start_time 
+      wait.until { @driver.find_element(find_element_by_type(step)) }
+    rescue
+      value = @timeout
+      status = 2
+      message = "A wait operation (#{step[:order]} #{step[:cmd]}) has timed out." 
+    end
+
+    format_metric step, value, "Time", status, message
   end
 
   def setTimeout(step)
+    self.timeout = step[:target]
   end
 
   def setStepName(step)
