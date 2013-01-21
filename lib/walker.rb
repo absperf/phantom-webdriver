@@ -9,6 +9,7 @@ class Walker
 
   def initialize(address)
     @address = address
+    open_config
   end
 
   def open_config
@@ -32,12 +33,13 @@ class Walker
   def take_action
     steps = evaluate_steps
     actions = Actions.new(@configuration)
+    metrics = []
 
     steps.each do |step|
-      actions.send(step[:cmd], step)
+      metrics << actions.send(step[:cmd], step)
     end
     actions.driver.close
-
+    metrics
   end
 
 end

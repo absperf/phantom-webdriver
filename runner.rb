@@ -1,10 +1,11 @@
 require 'selenium-webdriver'
-load 'lib/walker.rb'
+require_relative 'lib/walker'
 
-if ARGV.length != 0
+if ARGV.length == 0
   puts "Usage: ruby runner.rb <some URL>"
   exit
 end
 
 address = ARGV[0]
-walker = new Walker address
+walker = Walker.new address
+puts walker.take_action
