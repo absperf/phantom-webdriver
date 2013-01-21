@@ -51,6 +51,82 @@ describe Actions do
     end
   end
 
+  describe '#assertTextPresent' do
+    context 'is present' do
+      it 'asserts text' do
+        step = { :cmd => "type", :target => "google", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
+        action = @actions.assertTextPresent(step).split("\t")
+        action[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Validate|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+        action[1].should == "1"
+        action[2].should == "0"
+        action[3].should == nil
+      end
+
+      it 'asserts xpath' do
+        step = { :cmd => "type", :target => "//title", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
+        action = @actions.assertTextPresent(step).split("\t")
+        action[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Validate|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+        action[1].should == "1"
+        action[2].should == "0"
+        action[3].should == nil
+      end
+
+      it 'asserts regex' do
+        step = { :cmd => "type", :target => "regex:google", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
+        action = @actions.assertTextPresent(step).split("\t")
+        action[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Validate|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+        action[1].should == "1"
+        action[2].should == "0"
+        action[3].should == nil
+      end
+    end
+
+    context 'is not present' do
+      it 'asserts text' do
+        step = { :cmd => "type", :target => "goooooogle", :args => "", :link => "http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
+
+        action = @actions.assertTextPresent(step).split("\t")
+        action[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Validate|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+        action[1].should == "0"
+        action[2].should == "2"
+        action[3].should == "Assert Text Failed: expected to match '#{step[:target]}', but that text wasn't found"
+      end
+
+      it 'asserts xpath' do
+        step = { :cmd => "type", :target => "//title123", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
+        action = @actions.assertTextPresent(step).split("\t")
+        action[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Validate|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+        action[1].should == "0"
+        action[2].should == "2"
+        action[3].should == "Assert Text Failed: expected to match '#{step[:target]}', but that xpath wasn't found"
+      end
+
+      it 'asserts regex' do
+        step = { :cmd => "type", :target => "regex:abc1230", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
+        action = @actions.assertTextPresent(step).split("\t")
+        action[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Validate|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+        action[1].should == "0"
+        action[2].should == "2"
+        action[3].should == "Assert Text Failed: expected to match '#{step[:target]}', but that regex wasn't found"
+      end
+    end
+  end
+
+  describe '#waitForElementPresent' do
+  end
+
+  describe '#setTimeout' do
+  end
+
+  describe '#setStepName' do
+  end
+
+  describe '#changeFrame' do
+  end
+
+  describe '#assertTitle' do
+  end
+
   describe '#Total' do
     it 'returns a metric with the total time' do
       step = { :cmd => "Total", :target => "", :args => "", :link => "http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app => "New Test", :order => 999 }

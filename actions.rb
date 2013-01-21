@@ -33,6 +33,34 @@ class Actions
   end
 
   def assertTextPresent(step)
+    message = ""
+    status = 0
+    success = 1
+
+    if step[:target][0..1] == '//'
+      begin
+        @driver.find_element :xpath => step[:target]
+      rescue
+        status = 2
+        success = 0
+        message = "Assert Text Failed: expected to match '#{step[:target]}', but that xpath wasn't found"
+      end
+    elsif step[:target][0..5] == 'regex:'
+      regex = step[:target][6..-1]
+      if (@driver.page_source =~ /#{regex}/).nil?
+        status = 2
+        success = 0
+        message = "Assert Text Failed: expected to match '#{step[:target]}', but that regex wasn't found"
+      end
+    else
+      if !@driver.page_source.include? step[:target]
+        status = 2
+        success = 0
+        message = "Assert Text Failed: expected to match '#{step[:target]}', but that text wasn't found"
+      end
+    end
+
+    format_metric step, success, "Validate", status, message
   end
 
   def type(step)
