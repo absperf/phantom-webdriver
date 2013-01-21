@@ -89,12 +89,25 @@ class Actions
   end
 
   def setStepName(step)
+    @stepName = step[:target]
   end
 
   def changeFrame(step)
+    iframe = @driver.find_element(:id => step[:target])
+    @driver.switch_to.frame iframe
   end
 
   def assertTitle(step)
+    message = ""
+    success = 1
+    status = 0
+    unless @driver.title == step[:target]
+      success = 0
+      status = 2
+      message = "Assert Title Failed: expected to find #{step[:target]}, but it is #{@driver.title}"
+    end
+
+    format_metric step, success, "Validate", status, message
   end
 
   def Total(step)

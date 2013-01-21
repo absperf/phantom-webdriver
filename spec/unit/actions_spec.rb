@@ -132,6 +132,19 @@ describe Actions do
 
     context 'timeout' do
       it 'times out on an xpath' do
+        step = { :cmd => "waitForElementPresent", :target => "//title", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
+        @actions.timeout = 0
+        action = @actions.waitForElementPresent(step).split("\t")
+        action[2].should == "2"
+        action[3].should == "A wait operation (#{step[:order]} #{step[:cmd]}) has timed out."
+      end
+
+      it 'times out on an id' do
+        step = { :cmd => "waitForElementPresent", :target => "id=wikiheader", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
+        @actions.timeout = 0
+        action = @actions.waitForElementPresent(step).split("\t")
+        action[2].should == "2"
+        action[3].should == "A wait operation (#{step[:order]} #{step[:cmd]}) has timed out."
       end
     end
 
