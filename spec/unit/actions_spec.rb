@@ -35,12 +35,12 @@ describe Actions do
     end
   end
 
-  describe '#total' do
+  describe '#Total' do
     it 'returns a metric with the total time' do
       step = { :cmd => "Total", :target => "", :args => "", :link => "http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app => "New Test", :order => 999 }
       sleep 2
-      actions = @actions.total(step).split("\t")
-      actions[0].should == "App|#{step[:app]}|Time|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/,"")
+      actions = @actions.Total(step).split("\t")
+      actions[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Time|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/,"")
       actions[1].to_i.should == 2
       actions[2].to_i.should == 0
       actions[3].should == nil

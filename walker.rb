@@ -34,7 +34,7 @@ class Walker
     actions = Actions.new(@configuration)
 
     steps.each do |step|
-      actions.send(step[:cmd].downcase, step)
+      actions.send(step[:cmd], step)
     end
     actions.driver.close
 

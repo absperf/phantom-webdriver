@@ -44,13 +44,14 @@ class Actions
   def assertTitle(step)
   end
 
-  def total(step)
+  def Total(step)
     total_time = Time.now.to_i - @start_time
     formatMetric step, total_time, "Time", 0, ""
   end
 
   def formatMetric(step, value, type, status, message="")
-    dkey = "App|#{step[:app]}|Time|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+    page = @driver.title
+    dkey = "App|#{step[:app]}|#{page}|#{type}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
     "#{dkey}\t#{value}\t#{status}\t#{message}"
   end
 
