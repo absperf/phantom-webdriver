@@ -1,5 +1,5 @@
 require 'selenium-webdriver'
-load 'walker.rb'
+load 'lib/walker.rb'
 
 if ARGV.length != 0
   puts "Usage: ruby runner.rb <some URL>"

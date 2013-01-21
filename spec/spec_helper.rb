@@ -1,5 +1,5 @@
 require 'rspec'
-require_relative '../walker'
+require_relative '../lib/walker'
 
 RSpec.configure do |config|
 end
