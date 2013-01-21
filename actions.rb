@@ -13,6 +13,8 @@ class Actions
 
   def clickAndWait(step)
     @driver.find_element(find_element_by_type(step)).click
+    wait = Selenium::WebDriver::Wait.new(:timeout => 30)
+    wait.until { @driver.execute_script("return document.readyState") == "complete"; }
   end
 
   def click(step)

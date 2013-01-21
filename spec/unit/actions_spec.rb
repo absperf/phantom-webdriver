@@ -22,6 +22,8 @@ describe Actions do
       step = {:cmd=>"clickAndWait", :target=>"link=Project Home", :args=>"", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>2}
       Selenium::WebDriver::Element.any_instance.should_receive :click
       @actions.clickAndWait(step)
+      # TODO:
+      #   Tests for 'waitFor'
     end
   end
 
