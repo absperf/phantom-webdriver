@@ -5,7 +5,7 @@ describe Walker do
 
   describe '#initialize' do
     it 'sets the address' do
-      address = "#{Dir.pwd}/spec/fixtures/google.html"
+      address = "file://#{Dir.pwd}/spec/fixtures/google.html"
       walker = Walker.new address
       walker.instance_variable_get(:@address).should == address
     end
@@ -16,7 +16,6 @@ describe Walker do
       it 'returns a configuration' do
         address = "file://#{Dir.pwd}/spec/fixtures/google.html"
         walker = Walker.new address
-        walker.open_config
         walker.configuration.should_not == nil
         walker.configuration.class.should == Configuration
       end
@@ -25,8 +24,7 @@ describe Walker do
     context 'can\'t find a configuration' do
       it 'exits' do
         address = "file://#{Dir.pwd}/spec/fixtures/blaah.html"
-        walker = Walker.new address
-        -> { walker.open_config }.should raise_error SystemExit
+        -> { Walker.new address }.should raise_error SystemExit
       end
     end
   end
