@@ -32,7 +32,8 @@ class Walker
 
   def take_action
     steps = evaluate_steps
-    actions = Actions.new(@configuration)
+    driver = Selenium::WebDriver.for :phantomjs
+    actions = Actions.new(@configuration, driver)
     metrics = []
 
     steps.each do |step|

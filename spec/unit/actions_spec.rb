@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe Actions do
   before do
-    @actions = Actions.new(double(:start => 'http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes'))
+    driver = Selenium::WebDriver.for :phantomjs
+    @actions = Actions.new(double(:start => 'http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes'), driver)
   end
 
   after do

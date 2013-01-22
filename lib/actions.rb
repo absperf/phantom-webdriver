@@ -1,9 +1,9 @@
 class Actions
   attr_accessor :driver, :timeout
 
-  def initialize(configuration)
+  def initialize(configuration, driver)
     @timeout = 30
-    @driver = Selenium::WebDriver.for :phantomjs
+    @driver = driver
     @configuration = configuration
     @driver.navigate.to @configuration.start
     @start_time = Time.now.to_i
