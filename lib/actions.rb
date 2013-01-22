@@ -13,6 +13,7 @@ class Actions
     start_time = Time.now.to_i
     @driver.navigate.to step[:target]
     value = Time.now.to_i - start_time
+    format_metric step, value, "Time", 0, ""
   end
 
   def clickAndWait(step)
