@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = ''
   s.authors   = ["Joanne Cheng"]
   s.email     = ['jcheng@absolute-performance.com']
-  s.files     = ['lib/walker.rb', 'lib/actions.rb', 'lib/configuration.rb']
+  s.files     = ['lib/phantom-webdriver.rb', 'lib/walker.rb', 'lib/actions.rb', 'lib/configuration.rb']
 
   s.add_dependency "selenium-webdriver"
   s.add_dependency "typhoeus"
