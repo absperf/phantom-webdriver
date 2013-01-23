@@ -131,7 +131,7 @@ class Actions
 
   def format_metric(step, value, type, status, message="")
     page = @step_name || @driver.title
-    dkey = "App|#{step[:app]}|#{page}|#{type}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+    dkey = "App|#{step[:app]}|#{type}|#{page}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
     clear_step_name
     "#{dkey}\t#{value}\t#{status}\t#{message}"
   end
