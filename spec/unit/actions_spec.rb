@@ -25,7 +25,7 @@ describe Actions do
         Selenium::WebDriver::Element.any_instance.should_receive :click
         actions = @actions.clickAndWait(step).split("\t")
         @actions.driver.execute_script("return document.readyState").should == "complete"
-        actions[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Time|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/,"")
+        actions[0].should == "App|#{step[:app]}|Time|#{@actions.driver.title}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/,"")
       end
     end
 
@@ -36,7 +36,7 @@ describe Actions do
         Selenium::WebDriver::Element.any_instance.should_receive :click
         actions = @actions.clickAndWait(step).split("\t")
         @actions.driver.execute_script("return document.readyState").should_not == "complete"
-        actions[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Time|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/,"")
+        actions[0].should == "App|#{step[:app]}|Time|#{@actions.driver.title}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/,"")
         actions[2].should == "2"
         actions[3].should == "Click operation has timed out"
       end
@@ -57,7 +57,7 @@ describe Actions do
       it 'asserts text' do
         step = { :cmd => "type", :target => "google", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
         action = @actions.assertTextPresent(step).split("\t")
-        action[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Validate|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+        action[0].should == "App|#{step[:app]}|Validate|#{@actions.driver.title}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
         action[1].should == "1"
         action[2].should == "0"
         action[3].should == nil
@@ -66,7 +66,7 @@ describe Actions do
       it 'asserts xpath' do
         step = { :cmd => "type", :target => "//title", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
         action = @actions.assertTextPresent(step).split("\t")
-        action[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Validate|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+        action[0].should == "App|#{step[:app]}|Validate|#{@actions.driver.title}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
         action[1].should == "1"
         action[2].should == "0"
         action[3].should == nil
@@ -75,7 +75,7 @@ describe Actions do
       it 'asserts regex' do
         step = { :cmd => "type", :target => "regex:google", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
         action = @actions.assertTextPresent(step).split("\t")
-        action[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Validate|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+        action[0].should == "App|#{step[:app]}|Validate|#{@actions.driver.title}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
         action[1].should == "1"
         action[2].should == "0"
         action[3].should == nil
@@ -87,7 +87,7 @@ describe Actions do
         step = { :cmd => "type", :target => "goooooogle", :args => "", :link => "http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
 
         action = @actions.assertTextPresent(step).split("\t")
-        action[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Validate|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+        action[0].should == "App|#{step[:app]}|Validate|#{@actions.driver.title}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
         action[1].should == "0"
         action[2].should == "2"
         action[3].should == "Assert Text Failed: expected to match '#{step[:target]}', but that text wasn't found"
@@ -96,7 +96,7 @@ describe Actions do
       it 'asserts xpath' do
         step = { :cmd => "type", :target => "//title123", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
         action = @actions.assertTextPresent(step).split("\t")
-        action[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Validate|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+        action[0].should == "App|#{step[:app]}|Validate|#{@actions.driver.title}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
         action[1].should == "0"
         action[2].should == "2"
         action[3].should == "Assert Text Failed: expected to match '#{step[:target]}', but that xpath wasn't found"
@@ -105,7 +105,7 @@ describe Actions do
       it 'asserts regex' do
         step = { :cmd => "type", :target => "regex:abc1230", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
         action = @actions.assertTextPresent(step).split("\t")
-        action[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Validate|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+        action[0].should == "App|#{step[:app]}|Validate|#{@actions.driver.title}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
         action[1].should == "0"
         action[2].should == "2"
         action[3].should == "Assert Text Failed: expected to match '#{step[:target]}', but that regex wasn't found"
@@ -168,7 +168,7 @@ describe Actions do
       step = { :cmd => "Total", :target => "", :args => "", :link => "http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app => "New Test", :order => 999 }
       sleep 2
       actions = @actions.Total(step).split("\t")
-      actions[0].should == "App|#{step[:app]}|#{@actions.driver.title}|Time|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/,"")
+      actions[0].should == "App|#{step[:app]}|Time|#{@actions.driver.title}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/,"")
       actions[1].to_i.should == 2
       actions[2].to_i.should == 0
       actions[3].should == nil
