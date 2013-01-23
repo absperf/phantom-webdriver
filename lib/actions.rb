@@ -93,10 +93,12 @@ class Actions
 
   def setTimeout(step)
     self.timeout = step[:target]
+    nil
   end
 
   def setStepName(step)
     @step_name = step[:target]
+    nil
   end
 
   def changeFrame(step)
