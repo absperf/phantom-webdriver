@@ -90,7 +90,7 @@ class Actions
   end
 
   def setStepName(step)
-    @stepName = step[:target]
+    @step_name = step[:target]
   end
 
   def changeFrame(step)
@@ -148,6 +148,10 @@ class Actions
 
   def find_xpath(target)
     { :xpath => target }
+  end
+
+  def find_name(target)
+    { :name => target } 
   end
 
   def find_id(selector)
