@@ -18,19 +18,26 @@ class Actions
 
   def clickAndWait(step)
     start_time = Time.now.to_i
-    @driver.find_element(find_element_by_type(step)).click
-    wait = Selenium::WebDriver::Wait.new(:timeout => @timeout)
-    begin
-      wait.until { @driver.execute_script("return document.readyState") == "complete"; }
-      value = Time.now.to_i - start_time
-      format_metric step, value, "Time", 0, ""
-    rescue 
-      format_metric step, @timeout, "Time", 2, "Click operation has timed out"
+    if click(step) == true
+      wait = Selenium::WebDriver::Wait.new(:timeout => @timeout)
+      begin
+        wait.until { @driver.execute_script("return document.readyState") == "complete"; }
+        value = Time.now.to_i - start_time
+        format_metric step, value, "Time", 0, ""
+      rescue 
+        format_metric step, @timeout, "Time", 2, "Click operation has timed out"
+      end
     end
   end
 
   def click(step)
-    @driver.find_element(find_element_by_type(step)).click
+    begin
+      @driver.find_element(find_element_by_type(step)).click
+      true
+    rescue
+      format_metric step, 1, "Validate", 2, "#{step[:target]} not present"
+      false
+    end
   end
 
   def assertTextPresent(step)
@@ -117,9 +124,14 @@ class Actions
   end
 
   def format_metric(step, value, type, status, message="")
-    page = @driver.title
+    page = @step_name || @driver.title
     dkey = "App|#{step[:app]}|#{page}|#{type}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
+    clear_step_name
     "#{dkey}\t#{value}\t#{status}\t#{message}"
+  end
+
+  def clear_step_name
+    @step_name = nil
   end
 
   def find_link(selector)

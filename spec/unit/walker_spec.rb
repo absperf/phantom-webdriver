@@ -53,7 +53,7 @@ describe Walker do
       Actions.any_instance.should_receive(:clickAndWait).at_least(3).times
       Actions.any_instance.should_receive :type
       subject.open_config
-      subject.take_action
+      subject.take_action.class.should == Array
     end
   end
 
