@@ -35,8 +35,7 @@ class Actions
       @driver.find_element(find_element_by_type(step)).click
       true
     rescue
-      format_metric step, 1, "Validate", 2, "#{step[:target]} not present"
-      false
+      nil
     end
   end
 

@@ -40,7 +40,7 @@ class Walker
       metrics << actions.send(step[:cmd], step)
     end
     actions.driver.close
-    metrics
+    metrics.compact
   end
 
 end
