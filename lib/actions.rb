@@ -73,6 +73,7 @@ class Actions
   def type(step)
     begin
       @driver.find_element(find_element_by_type(step)).send_keys(step[:args])
+    rescue
     end
     nil
   end
