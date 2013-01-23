@@ -71,7 +71,10 @@ class Actions
   end
 
   def type(step)
-    @driver.find_element(find_element_by_type(step)).send_keys(step[:args])
+    begin
+      @driver.find_element(find_element_by_type(step)).send_keys(step[:args])
+    end
+    nil
   end
 
   def waitForElementPresent(step)
@@ -104,6 +107,7 @@ class Actions
   def changeFrame(step)
     iframe = @driver.find_element(:id => step[:target])
     @driver.switch_to.frame iframe
+    nil
   end
 
   def assertTitle(step)
