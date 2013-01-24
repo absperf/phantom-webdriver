@@ -6,23 +6,23 @@ class Actions
     @driver = driver
     @configuration = configuration
     @driver.navigate.to @configuration.start
-    @start_time = Time.now.to_i
+    @start_time = Time.now.to_f
   end
 
   def open(step)
-    start_time = Time.now.to_i
+    start_time = Time.now.to_f
     @driver.navigate.to step[:target]
-    value = Time.now.to_i - start_time
+    value = Time.now.to_f - start_time
     format_metric step, value, "Time", 0, ""
   end
 
   def clickAndWait(step)
-    start_time = Time.now.to_i
+    start_time = Time.now.to_f
     if click(step) == true
       wait = Selenium::WebDriver::Wait.new(:timeout => @timeout)
       begin
         wait.until { @driver.execute_script("return document.readyState") == "complete"; }
-        value = Time.now.to_i - start_time
+        value = Time.now.to_f - start_time
         format_metric step, value, "Time", 0, ""
       rescue 
         format_metric step, @timeout, "Time", 2, "Click operation has timed out"
@@ -79,12 +79,12 @@ class Actions
   end
 
   def waitForElementPresent(step)
-    start_time = Time.now.to_i
+    start_time = Time.now.to_f
     message = ""
     status = 0
     wait = Selenium::WebDriver::Wait.new :timeout => @timeout
     begin
-      value = Time.now.to_i - start_time 
+      value = Time.now.to_f - start_time 
       wait.until { @driver.find_element(find_element_by_type(step)) }
     rescue
       value = @timeout
@@ -125,7 +125,7 @@ class Actions
   end
 
   def Total(step)
-    total_time = Time.now.to_i - @start_time
+    total_time = Time.now.to_f - @start_time
     format_metric step, total_time, "Time", 0, ""
   end
 
