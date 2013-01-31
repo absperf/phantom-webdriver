@@ -39,7 +39,7 @@ class Walker
     steps.each do |step|
       metrics << actions.send(step[:cmd], step)
     end
-    actions.driver.close
+    actions.driver.quit
     metrics.compact
   end
 
