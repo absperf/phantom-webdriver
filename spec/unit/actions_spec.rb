@@ -33,7 +33,6 @@ describe Actions do
       it 'clicks the element and waits for timeout message' do
         step = { :cmd=>"clickAndWait", :target=>"link=Project Home", :args=>"", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>2 }
         @actions.timeout = 0
-        Selenium::WebDriver::Element.any_instance.should_receive :click
         actions = @actions.clickAndWait(step).split("\t")
         @actions.driver.execute_script("return document.readyState").should_not == "complete"
         actions[0].should == "App|#{step[:app]}|Time|#{@actions.driver.title}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/,"")
@@ -73,6 +72,7 @@ describe Actions do
       end
 
       it 'asserts regex' do
+        @actions.timeout = 3
         step = { :cmd => "type", :target => "regex:google", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
         action = @actions.assertTextPresent(step).split("\t")
         action[0].should == "App|#{step[:app]}|Validate|#{@actions.driver.title}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
@@ -84,6 +84,7 @@ describe Actions do
 
     context 'is not present' do
       it 'asserts text' do
+        @actions.timeout = 3
         step = { :cmd => "type", :target => "goooooogle", :args => "", :link => "http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
 
         action = @actions.assertTextPresent(step).split("\t")
@@ -94,6 +95,7 @@ describe Actions do
       end
 
       it 'asserts xpath' do
+        @actions.timeout = 3
         step = { :cmd => "type", :target => "//title123", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
         action = @actions.assertTextPresent(step).split("\t")
         action[0].should == "App|#{step[:app]}|Validate|#{@actions.driver.title}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")
@@ -103,6 +105,7 @@ describe Actions do
       end
 
       it 'asserts regex' do
+        @actions.timeout = 3
         step = { :cmd => "type", :target => "regex:abc1230", :args => "", :link=>"http://code.google.com/p/selenium/wiki/SeIDEReleaseNotes", :app=>"New Test", :order=>6 }
         action = @actions.assertTextPresent(step).split("\t")
         action[0].should == "App|#{step[:app]}|Validate|#{@actions.driver.title}|#{step[:order]} #{step[:cmd]}".gsub(/^\s+|\s+$/, "")

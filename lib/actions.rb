@@ -43,7 +43,6 @@ class Actions
     message = ""
     status = 0
     success = 1
-    puts "target #{step[:target]}"
 
     if step[:target][0..1] == '//'
       begin
@@ -57,7 +56,8 @@ class Actions
     elsif step[:target][0..5] == 'regex:'
       regex = step[:target][6..-1]
       begin
-       wait.until { @driver.page_source =~ /#{regex}/).nil? }
+        wait = Selenium::WebDriver::Wait.new :timeout => @timeout
+        wait.until { @driver.page_source =~ /#{regex}/ }
       rescue
         status = 2
         success = 0
