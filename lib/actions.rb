@@ -11,7 +11,7 @@ class Actions
 
   def open(step)
     start_time = Time.now.to_f
-    @driver.navigate.to step[:target]
+    @driver.navigate.to @configuration.start + step[:target]
     value = Time.now.to_f - start_time
     format_metric step, value, "Time", 0, ""
   end
@@ -32,6 +32,7 @@ class Actions
 
   def click(step)
     begin
+      wait_for_element(step)
       @driver.find_element(find_element_by_type(step)).click
       true
     rescue
@@ -72,6 +73,7 @@ class Actions
 
   def type(step)
     begin
+      wait_for_element(step)
       @driver.find_element(find_element_by_type(step)).send_keys(step[:args])
     rescue
     end
@@ -82,10 +84,9 @@ class Actions
     start_time = Time.now.to_f
     message = ""
     status = 0
-    wait = Selenium::WebDriver::Wait.new :timeout => @timeout
     begin
       value = Time.now.to_f - start_time 
-      wait.until { @driver.find_element(find_element_by_type(step)) }
+      wait_for_element(step)
     rescue
       value = @timeout
       status = 2
@@ -93,6 +94,11 @@ class Actions
     end
 
     format_metric step, value, "Time", status, message
+  end
+
+  def wait_for_element(step)
+    wait = Selenium::WebDriver::Wait.new :timeout => @timeout
+    wait.until { @driver.find_element(find_element_by_type(step)) }
   end
 
   def setTimeout(step)
