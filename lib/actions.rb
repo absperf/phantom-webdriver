@@ -11,22 +11,22 @@ class Actions
 
   def open(step)
     start_time = Time.now.to_f
-    @driver.navigate.to @configuration.start + step[:target]
+    @driver.navigate.to "#{@configuration.start}#{step[:target]}"
     value = Time.now.to_f - start_time
     format_metric step, value, "Time", 0, ""
   end
 
   def clickAndWait(step)
     start_time = Time.now.to_f
-    if click(step) == true
+    begin
+      wait_for_element(step)
+      @driver.find_element(find_element_by_type(step)).click
       wait = Selenium::WebDriver::Wait.new(:timeout => @timeout)
-      begin
-        wait.until { @driver.execute_script("return document.readyState") == "complete"; }
-        value = Time.now.to_f - start_time
-        format_metric step, value, "Time", 0, ""
-      rescue 
-        format_metric step, @timeout, "Time", 2, "Click operation has timed out"
-      end
+      wait.until { @driver.execute_script("return document.readyState") == "complete"; }
+      value = Time.now.to_f - start_time
+      format_metric step, value, "Time", 0, ""
+    rescue 
+      format_metric step, @timeout, "Time", 2, "Click operation has timed out"
     end
   end
 
@@ -34,20 +34,21 @@ class Actions
     begin
       wait_for_element(step)
       @driver.find_element(find_element_by_type(step)).click
-      true
     rescue
-      nil
     end
+    nil
   end
 
   def assertTextPresent(step)
     message = ""
     status = 0
     success = 1
+    puts "target #{step[:target]}"
 
     if step[:target][0..1] == '//'
       begin
-        @driver.find_element :xpath => step[:target]
+        wait = Selenium::WebDriver::Wait.new :timeout => @timeout
+        wait.until { @driver.find_element :xpath => step[:target] }
       rescue
         status = 2
         success = 0
@@ -55,13 +56,18 @@ class Actions
       end
     elsif step[:target][0..5] == 'regex:'
       regex = step[:target][6..-1]
-      if (@driver.page_source =~ /#{regex}/).nil?
+      begin
+       wait.until { @driver.page_source =~ /#{regex}/).nil? }
+      rescue
         status = 2
         success = 0
         message = "Assert Text Failed: expected to match '#{step[:target]}', but that regex wasn't found"
       end
     else
-      if !@driver.page_source.include? step[:target]
+      begin
+        wait = Selenium::WebDriver::Wait.new :timeout => @timeout
+        wait.until { @driver.page_source.include? step[:target] }
+      rescue
         status = 2
         success = 0
         message = "Assert Text Failed: expected to match '#{step[:target]}', but that text wasn't found"
